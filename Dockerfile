@@ -7,5 +7,3 @@ COPY . /HomeVideos/
 RUN apk update && apk add vim
 RUN apk add mysql-client
 RUN npm install
-
-CMD ["node", "./index.js"]
