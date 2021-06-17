@@ -1,4 +1,4 @@
-export const films = {
+const films = {
   '1': {
     title: 'Anchorman: The Legend of Ron Burgandy',
     genre: '',
@@ -816,3 +816,5 @@ export const films = {
     file_path: ''
   }
 };
+
+module.exports = { films };
