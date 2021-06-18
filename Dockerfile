@@ -5,5 +5,7 @@ WORKDIR /HomeVideos
 COPY . /HomeVideos/
 
 RUN apk update && apk add vim
-RUN apk add mysql-client
-RUN npm install
+RUN npm init -y
+RUN npm i
+RUN npm i mysql2
+RUN npm i typescript --save-dev
