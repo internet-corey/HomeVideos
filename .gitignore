@@ -1,3 +1,6 @@
+# files
+api/omdb_api_key.js
+
 # Logs
 logs
 *.log

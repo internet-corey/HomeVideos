@@ -1,5 +1,5 @@
 const films = [
-  [`Anchorman: The Legend of Ron Burgandy`],
+  [`Anchorman: The Legend of Ron Burgundy`],
   [`Anchorman 2: The Legend Continues`],
   [`Batman Begins`],
   [`Beerfest`],
