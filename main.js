@@ -2,11 +2,7 @@ const api = require('./api/omdb_api.js');
 const scripts = require('./db/scripts.js');
 const dedent = require('dedent');
 
-const updateMetadata = () => {
-  const updatedFilms = {};
-  const erroredFilms = {};
-
-  // connect to db, pull all films without metadata
+const main = () => {
   const selectQuery = dedent`
     SELECT title
     FROM films
@@ -15,17 +11,6 @@ const updateMetadata = () => {
       OR rating IS NULL
       OR runtime IS NULL
   `;
-  titlesNeedUpdating = scripts.select(selectQuery);
-
-  // loop thru the list, grab metadata from api, save to success and error obs
-  titlesNeedUpdating.forEach(title => {
-    metaData = api.search(title);
-    metaData.response === "True"
-      ? updatedFilms[film] = metaData
-      : erroredFilms[film] = metaData;
-  })
-
-  // insert for all success, console.log for erroredFilms
   const updateQuery = dedent`
     UPDATE films
     SET year = ?
@@ -33,23 +18,32 @@ const updateMetadata = () => {
       ,rating = ?
       ,runtime = ?
   `;
-  updatedFilms.forEach(film => {
-    const metaData = updatedFilms[film];
-    if ("nonalphanumeric-stripped lowercase title does not equal metaData.title") {
-      erroredFilms[film] = 'Matched to wrong title';
+
+  const updateFilms = (title, response) => {
+    if (false && "nonalphanumeric-stripped lowercase title does not equal response.title") {
+      console.log(`${title} matched to wrong title ${response.Title}`);
     } else {
       scripts.update(
         updateQuery,
-        metaData.Year,
-        metaData.Genre,
-        metaData.Rating,
-        metaData.Runtime,
+        response.Year,
+        response.Genre,
+        response.Rating,
+        response.Runtime,
       );
     }
-  });
+  };
 
-  console.log('Something went wrong with: ');
-  erroredFilms.forEach(badFilm => console.log(erroredFilms[badFilm]));
+  scripts.select(selectQuery, (rows) => {
+    const titles = rows.map(row => (row.title));
+    titles.forEach(title => {
+      api.search(title).then(response => {
+        const res = JSON.parse(response);
+        res.Response === "True"
+          ? updateFilms(title, res)
+          : console.log(`ERROR - ${film}: ${res}`);
+      });
+    })
+  });
 };
 
-updateMetadata();
+main();

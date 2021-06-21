@@ -1,27 +1,21 @@
 const connect = require('./connect.js');
 
-const bulkInsert = (query, arrayOfArrays) => {
+const bulkInsert = async (query, arrayOfArrays) => {
   const conn = connect.conn;
-  conn.query(query, [arrayOfArrays], function (error, results, fields) {
-    if (error) throw error;
-  });
+  conn.query(query, [arrayOfArrays]);
   conn.end();
 };
 
-const update = (query, ...params) => {
+const update = async (query, ...params) => {
   const conn = connect.conn;
-  conn.query(query, [...params], function (error, results, fields) {
-    if (error) throw error;
-  });
+  conn.query(query, [...params]);
   conn.end();
 };
 
-const select = (query, ...params) => {
+const select = async (query, callback, ...params) => {
   const conn = connect.conn;
-  conn.query(query, [...params], function (error, results, fields) {
-    if (error) throw error;
-    return results;
-  });
+  const rows = await conn.query(query, ...params);
+  callback(rows[0]);
   conn.end();
 };
 
