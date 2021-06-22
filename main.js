@@ -1,8 +1,8 @@
-const api = require('./api/omdb_api.js');
-const scripts = require('./db/scripts.js');
-const dedent = require('dedent');
+(() => {
+  const api = require('./api/omdb_api.js');
+  const scripts = require('./db/scripts.js');
+  const dedent = require('dedent');
 
-const main = () => {
   const selectQuery = dedent`
     SELECT title
     FROM films
@@ -20,15 +20,20 @@ const main = () => {
   `;
 
   const updateFilms = (title, response) => {
-    if (false && "nonalphanumeric-stripped lowercase title does not equal response.title") {
-      console.log(`${title} matched to wrong title ${response.Title}`);
+    const clean = (str) => {
+      return str.replace(/[^\w\s]/g, '').replace('  ', ' ').toLowerCase();
+    }
+
+    // skips false positive matches
+    if (clean(title) !== clean(response.Title)) {
+      console.log(`ERROR - ${title} matched to wrong title ${response.Title}`);
     } else {
       scripts.update(
         updateQuery,
         response.Year,
         response.Genre,
         response.Rating,
-        response.Runtime,
+        response.Runtime.replace(' min', ''),
       );
     }
   };
@@ -44,6 +49,4 @@ const main = () => {
       });
     })
   });
-};
-
-main();
+})();
