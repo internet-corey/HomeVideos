@@ -1,5 +1,6 @@
 # files
-api/omdb_api_key.js
+src/api/omdb_api_key.js
+src/testing_async_garb.js
 
 # Logs
 logs
