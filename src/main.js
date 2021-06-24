@@ -20,7 +20,7 @@
   `;
 
   const updateFilms = (title, response) => {
-    const clean = (str) => {
+    const clean = str => {
       return str.replace(/[^\w\s]/g, '').replace('  ', ' ').toLowerCase();
     }
 
@@ -32,20 +32,20 @@
         updateQuery,
         response.Year,
         response.Genre,
-        response.Rating,
+        response.Rated,
         response.Runtime.replace(' min', ''),
       );
     }
   };
 
-  scripts.select(selectQuery, (rows) => {
+  scripts.select(selectQuery, rows => {
     const titles = rows.map(row => (row.title));
     titles.forEach(title => {
       api.search(title).then(response => {
         const res = JSON.parse(response);
         res.Response === "True"
           ? updateFilms(title, res)
-          : console.log(`ERROR - ${film}: ${res}`);
+          : console.log(`ERROR - ${title}: ${res}`);
       });
     })
   });

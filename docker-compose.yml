@@ -26,5 +26,7 @@ services:
     depends_on:
       - db
     tty: true
+    volumes:
+      - ./src:/HomeVideos/src
 volumes:
   sqldb:
