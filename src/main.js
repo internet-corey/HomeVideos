@@ -17,6 +17,7 @@
       ,genre = ?
       ,rating = ?
       ,runtime = ?
+    WHERE title = ?
   `;
 
   const updateFilms = (title, response) => {
@@ -34,6 +35,7 @@
         response.Genre,
         response.Rated,
         response.Runtime.replace(' min', ''),
+        title
       );
     }
   };
