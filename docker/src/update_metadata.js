@@ -21,7 +21,7 @@ async function main() {
     WHERE title = ?
   `;
 
-  const updateFilms = (title, response) => {
+  function updateFilms(title, response) {
     const clean = str => {
       return str.replace(/[^\w\s]/g, '').replace('  ', ' ').toLowerCase();
     }
@@ -39,9 +39,9 @@ async function main() {
         title
       );
     }
-  };
+  }
 
-  const titles = (await scripts.select(selectQuery)).map(row => (row.title));;
+  const titles = (await scripts.select(selectQuery)).map(row => (row.title));
   for (let title of titles) {
     res = JSON.parse(await api.search(title, privateKey));
     res.Response === "True"

@@ -1,11 +1,19 @@
-const connect = require('./connect.js');
+const mysql = require('mysql2');
 
-const setupQuery = dedent`
-  DROP TABLE IF EXISTS custom_tags, films;
+const conn = mysql.createConnection({
+  host: 'db',
+  user: 'root',
+  password: 'rewt',
+  database: 'db',
+  multipleStatements: true
+});
+
+const setupQuery = `
+  DROP TABLE IF EXISTS films;
   CREATE TABLE films (
-    id SMALLINT NOT NULL UNIQUE AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(250),
-    year SMALLINT,
+    year VARCHAR(250),
     genre VARCHAR(250),
     rating VARCHAR(250),
     runtime VARCHAR(250),
@@ -13,16 +21,7 @@ const setupQuery = dedent`
     file_path VARCHAR(250),
     PRIMARY KEY (id)
   );
-  CREATE TABLE custom_tags (
-    id SMALLINT NOT NULL UNIQUE AUTO_INCREMENT,
-    film_id SMALLINT,
-    custom_tag VARCHAR(250),
-    PRIMARY KEY (id),
-    FOREIGN KEY (film_id) REFERENCES films (id)
-  );
 `;
 
-connect.conn.query(setupQuery, function (error, results, fields) {
-  if (error) throw error;
-})
-connect.conn.end();
+conn.query(setupQuery, error => {if (error) throw error});
+conn.end();

@@ -1,7 +1,7 @@
 const apiKey = require('./api_key.js'); // .gitignore'd
 const https = require('https');
 
-const search = (searchTerm, privateKey, imageSearch=false) => {
+function search(searchTerm, privateKey, imageSearch=false) {
   const key = apiKey.decrypt(apiKey.encryptedApiKey, privateKey);  // priv key gitignored
   const url = imageSearch
     ? `https://www.img.omdbapi.com/?apikey=${key}&t=${searchTerm}`
@@ -23,6 +23,6 @@ const search = (searchTerm, privateKey, imageSearch=false) => {
       console.log('ERROR: ', e.message);
     });
   });
-};
+}
 
 module.exports = { search };

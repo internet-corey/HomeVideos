@@ -9,23 +9,23 @@ async function connection() {
   });
 }
 
-const bulkInsert = async (query, arrayOfArrays) => {
+async function bulkInsert(query, arrayOfArrays) {
   const conn = await connection();
   conn.query(query, [arrayOfArrays]);
   conn.end();
-};
+}
 
-const update = async (query, ...params) => {
+async function update(query, ...params) {
   const conn = await connection();
   conn.query(query, [...params]);
   conn.end();
-};
+}
 
-const select = async (query, ...params) => {
+async function select(query, ...params) {
   const conn = await connection();
   const rows = await conn.query(query, ...params);
   conn.end();
   return rows[0]
-};
+}
 
 module.exports = { bulkInsert, update, select };
