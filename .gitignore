@@ -1,5 +1,5 @@
 # files
-src/api/omdb_api_key.js
+src/api/private_key.pem
 src/testing_async_garb.js
 
 # Logs

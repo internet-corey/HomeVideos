@@ -1,9 +1,8 @@
 (() => {
   const api = require('./api/omdb_api.js');
   const scripts = require('./db/scripts.js');
-  const dedent = require('dedent');
 
-  const selectQuery = dedent`
+  const selectQuery = `
     SELECT title
     FROM films
     WHERE year IS NULL
@@ -11,7 +10,7 @@
       OR rating IS NULL
       OR runtime IS NULL
   `;
-  const updateQuery = dedent`
+  const updateQuery = `
     UPDATE films
     SET year = ?
       ,genre = ?
