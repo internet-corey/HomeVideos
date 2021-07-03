@@ -16,7 +16,7 @@ services:
     volumes:
       - sqldb:/var/lib/mysql
   app:
-    build: .
+    build: ./docker
     image: node:14-alpine
     container_name: node
     ports:
@@ -29,6 +29,6 @@ services:
       - db
     tty: true
     volumes:
-      - ./src:/HomeVideos/src
+      - ./docker/src:/HomeVideos/src
 volumes:
   sqldb:

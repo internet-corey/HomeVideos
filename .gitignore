@@ -1,6 +1,5 @@
 # files
-src/api/private_key.pem
-src/testing_async_garb.js
+docker/src/api/private_key.pem
 
 # Logs
 logs
