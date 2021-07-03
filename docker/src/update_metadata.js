@@ -1,9 +1,10 @@
-(() => {
-  const api = require('./api/omdb_api.js');
+async function main() {
+  const api = require('./api/api_search.js');
   const scripts = require('./db/scripts.js');
-  const dedent = require('dedent');
 
-  const selectQuery = dedent`
+  const privateKey = './api/private_key.pem'
+
+  const selectQuery = `
     SELECT title
     FROM films
     WHERE year IS NULL
@@ -11,7 +12,7 @@
       OR rating IS NULL
       OR runtime IS NULL
   `;
-  const updateQuery = dedent`
+  const updateQuery = `
     UPDATE films
     SET year = ?
       ,genre = ?
@@ -20,7 +21,7 @@
     WHERE title = ?
   `;
 
-  const updateFilms = (title, response) => {
+  function updateFilms(title, response) {
     const clean = str => {
       return str.replace(/[^\w\s]/g, '').replace('  ', ' ').toLowerCase();
     }
@@ -38,17 +39,17 @@
         title
       );
     }
-  };
+  }
 
-  scripts.select(selectQuery, rows => {
-    const titles = rows.map(row => (row.title));
-    titles.forEach(title => {
-      api.search(title).then(response => {
-        const res = JSON.parse(response);
-        res.Response === "True"
-          ? updateFilms(title, res)
-          : console.log(`ERROR - ${title}: ${res}`);
-      });
-    })
-  });
+  const titles = (await scripts.select(selectQuery)).map(row => (row.title));
+  for (let title of titles) {
+    res = JSON.parse(await api.search(title, privateKey));
+    res.Response === "True"
+      ? updateFilms(title, res)
+      : console.log(`ERROR - ${title}: ${res}`);
+  }
+}
+
+(async () => {
+  await main();
 })();

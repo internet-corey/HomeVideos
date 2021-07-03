@@ -11,22 +11,24 @@ services:
       MYSQL_ROOT_PASSWORD: 'rewt'
     ports:
       - '3306:3306'
-    expose:
-      - '3306'
+    networks:
+      - default
     volumes:
       - sqldb:/var/lib/mysql
   app:
-    build: .
+    build: ./docker
     image: node:14-alpine
     container_name: node
     ports:
       - 3000:3000
-    expose:
-      - '3000'
+    networks:
+      default:
+        aliases:
+          - theapp
     depends_on:
       - db
     tty: true
     volumes:
-      - ./src:/HomeVideos/src
+      - ./docker/src:/HomeVideos/src
 volumes:
   sqldb:
