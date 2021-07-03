@@ -1,9 +1,7 @@
-const dedent = require('dedent');
 const connect = require('./connect.js');
 
 const setupQuery = dedent`
-  DROP TABLE IF EXISTS custom_tags;
-  DROP TABLE IF EXISTS films;
+  DROP TABLE IF EXISTS custom_tags, films;
   CREATE TABLE films (
     id SMALLINT NOT NULL UNIQUE AUTO_INCREMENT,
     title VARCHAR(250),
