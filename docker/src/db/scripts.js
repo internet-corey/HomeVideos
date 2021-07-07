@@ -5,7 +5,8 @@ const knex = require('knex')({
     user : 'root',
     password : 'rewt',
     database : 'db'
-  }
+  },
+  pool: { min: 0, max: 7 }
 });
 
 async function bulkInsert(table, valuesArray) {
@@ -26,4 +27,4 @@ async function select(query, ...params) {
   return rows[0]
 }
 
-export default { bulkInsert, update, select };
+module.exports = { bulkInsert, update, select };
