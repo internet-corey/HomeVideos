@@ -100,7 +100,7 @@ const films = [
  {title: `Wedding Crashers`},
  {title: `The World's End`},
  {title: `Young Frankenstein`},
- {title: `Zootopia`]
+ {title: `Zootopia`}
 ]
 
 module.exports = { films };

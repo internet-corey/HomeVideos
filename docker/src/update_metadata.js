@@ -12,16 +12,8 @@ async function main() {
       OR rating IS NULL
       OR runtime IS NULL
   `;
-  const updateQuery = `
-    UPDATE films
-    SET year = ?
-      ,genre = ?
-      ,rating = ?
-      ,runtime = ?
-    WHERE title = ?
-  `;
 
-  function updateFilms(title, response) {
+  function updateFilms(filmTitle, response) {
     const clean = str => {
       return str.replace(/[^\w\s]/g, '').replace('  ', ' ').toLowerCase();
     }
@@ -30,23 +22,24 @@ async function main() {
     if (clean(title) !== clean(response.Title)) {
       console.log(`ERROR - ${title} matched to wrong title ${response.Title}`);
     } else {
-      scripts.update(
-        updateQuery,
-        response.Year,
-        response.Genre,
-        response.Rated,
-        response.Runtime.replace(' min', ''),
-        title
-      );
+      const whereClause = { title: filmTitle };
+      const setClause = {
+        year: response.Year,
+        genre: response.Genre,
+        rating: response.Rated,
+        runtime: response.Runtime.replace(' min', '')
+      };
+      scripts.update('films', whereClause, setClause);
     }
   }
 
-  const titles = (await scripts.select(selectQuery)).map(row => (row.title));
+  const titles = await scripts.select('title', 'films', 'year', 'genre', 'rating', 'runtime');
   for (let title of titles) {
-    res = JSON.parse(await api.search(title, privateKey));
-    res.Response === "True"
-      ? updateFilms(title, res)
-      : console.log(`ERROR - ${title}: ${res}`);
+    console.log(title);
+    // res = JSON.parse(await api.search(title, privateKey));
+    // res.Response === "True"
+    //   ? updateFilms(title, res)
+    //   : console.log(`ERROR - ${title}: ${res}`);
   }
 }
 

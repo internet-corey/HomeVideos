@@ -14,17 +14,14 @@ async function bulkInsert(table, valuesArray) {
   return result;
 }
 
-async function update(query, ...params) {
-  const conn = await connection();
-  conn.query(query, [...params]);
-  conn.end();
+async function update(table, whereClause, setClause) {
+  const result = await knex(table).where(whereClause).update(setClause);
+  return result;
 }
 
-async function select(query, ...params) {
-  const conn = await connection();
-  const rows = await conn.query(query, ...params);
-  conn.end();
-  return rows[0]
+async function select(field, table, ...nullFields) {
+  const result = await knex.select(field).from(table).whereNull(...nullFields);
+  return result;
 }
 
 module.exports = { bulkInsert, update, select };
