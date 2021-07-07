@@ -1,18 +1,16 @@
-const mysql = require('mysql2/promise');
+const knex = require('knex')({
+  client: 'mysql2',
+  connection: {
+    host : 'db',
+    user : 'root',
+    password : 'rewt',
+    database : 'db'
+  }
+});
 
-async function connection() {
-  return await mysql.createConnection({
-    host: 'db',
-    user: 'root',
-    password: 'rewt',
-    database: 'db'
-  });
-}
-
-async function bulkInsert(query, arrayOfArrays) {
-  const conn = await connection();
-  conn.query(query, [arrayOfArrays]);
-  conn.end();
+async function bulkInsert(table, valuesArray) {
+  const result = await knex(table).insert(valuesArray);
+  return result;
 }
 
 async function update(query, ...params) {
@@ -28,4 +26,4 @@ async function select(query, ...params) {
   return rows[0]
 }
 
-module.exports = { bulkInsert, update, select };
+export default { bulkInsert, update, select };
