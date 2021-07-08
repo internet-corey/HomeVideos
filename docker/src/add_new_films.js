@@ -1,6 +1,13 @@
-const scripts = require('./db/scripts.js');
+async function main() {
+  const scripts = require('./db/scripts.js');
 
-const query = 'INSERT INTO films (title) VALUES ?';
-const films = process.argv.slice(2).map(film => ([film]));
+  const filmArray = process.argv.slice(2).map(film => ({title: film}));
+  const knex = scripts.knex();
 
-scripts.bulkInsert(query, films);
+  await scripts.bulkInsert(knex, 'films', filmArray);
+  knex.destroy();
+}
+
+(async () => {
+  await main();
+})();

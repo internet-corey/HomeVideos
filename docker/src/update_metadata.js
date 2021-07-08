@@ -2,52 +2,40 @@ async function main() {
   const api = require('./api/api_search.js');
   const scripts = require('./db/scripts.js');
 
-  const privateKey = './api/private_key.pem'
+  const privateKey = './api/private_key.pem';
+  const knex = scripts.knex();
 
-  const selectQuery = `
-    SELECT title
-    FROM films
-    WHERE year IS NULL
-      OR genre IS NULL
-      OR rating IS NULL
-      OR runtime IS NULL
-  `;
-  const updateQuery = `
-    UPDATE films
-    SET year = ?
-      ,genre = ?
-      ,rating = ?
-      ,runtime = ?
-    WHERE title = ?
-  `;
-
-  function updateFilms(title, response) {
-    const clean = str => {
+  async function updateFilms(filmTitle, response) {
+    function clean(str) {
       return str.replace(/[^\w\s]/g, '').replace('  ', ' ').toLowerCase();
     }
 
     // skips false positive matches
-    if (clean(title) !== clean(response.Title)) {
-      console.log(`ERROR - ${title} matched to wrong title ${response.Title}`);
+    if (clean(filmTitle) !== clean(response.Title)) {
+      console.log(`ERROR - ${filmTitle} matched to wrong title ${response.Title}`);
     } else {
-      scripts.update(
-        updateQuery,
-        response.Year,
-        response.Genre,
-        response.Rated,
-        response.Runtime.replace(' min', ''),
-        title
-      );
+      const whereClause = { title: filmTitle };
+      const setClause = {
+        year: response.Year,
+        genre: response.Genre,
+        rating: response.Rated,
+        runtime: response.Runtime.replace(' min', '')
+      };
+      await scripts.update(knex, 'films', whereClause, setClause);
     }
   }
 
-  const titles = (await scripts.select(selectQuery)).map(row => (row.title));
+  const nullFields = ['year', 'genre', 'rating', 'runtime'];
+  const titles = (await scripts.select(knex, 'title', 'films', ...nullFields)).map(title => (title.title));
+
   for (let title of titles) {
     res = JSON.parse(await api.search(title, privateKey));
     res.Response === "True"
-      ? updateFilms(title, res)
+      ? await updateFilms(title, res)
       : console.log(`ERROR - ${title}: ${res}`);
   }
+
+  knex.destroy();
 }
 
 (async () => {

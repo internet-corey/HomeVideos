@@ -1,31 +1,28 @@
-const mysql = require('mysql2/promise');
-
-async function connection() {
-  return await mysql.createConnection({
-    host: 'db',
-    user: 'root',
-    password: 'rewt',
-    database: 'db'
+function knex() {
+  const conn = require('knex')({
+    client: 'mysql2',
+    connection: {
+      host : 'db',
+      user : 'root',
+      password : 'rewt',
+      database : 'db'
+    },
+    pool: { min: 0, max: 7 }
   });
+  return conn;
 }
 
-async function bulkInsert(query, arrayOfArrays) {
-  const conn = await connection();
-  conn.query(query, [arrayOfArrays]);
-  conn.end();
+async function bulkInsert(knex, table, valuesArray) {
+  await knex(table).insert(valuesArray);
 }
 
-async function update(query, ...params) {
-  const conn = await connection();
-  conn.query(query, [...params]);
-  conn.end();
+async function update(knex, table, whereClause, setClause) {
+  await knex(table).where(whereClause).update(setClause);
 }
 
-async function select(query, ...params) {
-  const conn = await connection();
-  const rows = await conn.query(query, ...params);
-  conn.end();
-  return rows[0]
+async function select(knex, field, table, ...nullFields) {
+  const result = await knex.select(field).from(table).whereNull(...nullFields);
+  return result;
 }
 
-module.exports = { bulkInsert, update, select };
+module.exports = { knex, bulkInsert, update, select };
