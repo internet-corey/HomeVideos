@@ -26,10 +26,10 @@ async function main() {
   }
 
   const nullFields = ['year', 'genre', 'rating', 'runtime'];
-  const titles = (await scripts.select(knex, 'title', 'films', ...nullFields)).map(title => (title.title));
+  const titles = (await scripts.select(knex, 'title', 'films', ...nullFields)).map(row => (row.title));
 
   for (let title of titles) {
-    res = JSON.parse(await api.search(title, privateKey));
+    const res = await api.search(title, privateKey);
     res.Response === "True"
       ? await updateFilms(title, res)
       : console.log(`ERROR - ${title}: ${res}`);
