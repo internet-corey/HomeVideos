@@ -2,10 +2,11 @@ async function main() {
   const api = require('./api/api_search.js');
   const scripts = require('./db/scripts.js');
 
-  const privateKey = './api/private_key.pem'
+  const privateKey = './api/private_key.pem';
+  const knex = scripts.knex();
 
   function updateFilms(filmTitle, response) {
-    const clean = str => {
+    function clean(str) {
       return str.replace(/[^\w\s]/g, '').replace('  ', ' ').toLowerCase();
     }
 
@@ -20,12 +21,12 @@ async function main() {
         rating: response.Rated,
         runtime: response.Runtime.replace(' min', '')
       };
-      scripts.update('films', whereClause, setClause);
+      scripts.update(knex, 'films', whereClause, setClause);
     }
   }
 
   const nullFields = ['year', 'genre', 'rating', 'runtime'];
-  const titles = (await scripts.select('title', 'films', ...nullFields)).map(title => (title.title));
+  const titles = (await scripts.select(knex, 'title', 'films', ...nullFields)).map(title => (title.title));
 
   for (let title of titles) {
     res = JSON.parse(await api.search(title, privateKey));
@@ -33,6 +34,8 @@ async function main() {
       ? updateFilms(title, res)
       : console.log(`ERROR - ${title}: ${res}`);
   }
+
+  knex.destroy();
 }
 
 (async () => {
