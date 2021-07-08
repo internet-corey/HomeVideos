@@ -13,13 +13,11 @@ function knex() {
 }
 
 async function bulkInsert(knex, table, valuesArray) {
-  const result = await knex(table).insert(valuesArray);
-  return result;
+  await knex(table).insert(valuesArray);
 }
 
 async function update(knex, table, whereClause, setClause) {
-  const result = await knex(table).where(whereClause).update(setClause);
-  return result;
+  await knex(table).where(whereClause).update(setClause);
 }
 
 async function select(knex, field, table, ...nullFields) {
