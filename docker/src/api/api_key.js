@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const path = require('path')
 const fs = require('fs')
 
+// found on stackoverflow 
 function decrypt(toDecrypt, privateKeyPath) {
   const absolutePath = path.resolve(privateKeyPath)
   const privateKey = fs.readFileSync(absolutePath, 'utf8')
