@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "rootDir": ".",
+    "outDir": "./js-dst",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "types": ["node"]
+  }
+}
