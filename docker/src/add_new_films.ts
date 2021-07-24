@@ -1,7 +1,7 @@
 import { conn, bulkInsert } from './db/scripts';
 import { Knex } from 'knex';
 
-async function main(): Promise<void> {
+async function main() {
   const filmArray: {title: string}[] = process.argv.slice(2).map(film => ({title: film}));
   const knex: Knex = conn();
 
@@ -9,6 +9,6 @@ async function main(): Promise<void> {
   knex.destroy();
 }
 
-(async (): Promise<void> => {
+(async () => {
   await main();
 })();

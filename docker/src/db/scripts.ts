@@ -1,5 +1,5 @@
 import { Film } from "knex/types/tables";
-import { knex, Knex } from 'knex';
+import knex, { Knex } from "knex";
 
 function conn() {
   const config = {
@@ -16,11 +16,11 @@ function conn() {
   return knex_conn;
 }
 
-async function bulkInsert(conn: Knex, table: string, valuesArray: {title: string}[]): Promise<void> {
+async function bulkInsert(conn: Knex, table: string, valuesArray: {title: string}[]) {
   await conn(table).insert(valuesArray);
 }
 
-async function update(conn: Knex, table: string, whereClause: {title: string}, setClause: {}): Promise<void> {
+async function update(conn: Knex, table: string, whereClause: {title: string}, setClause: {}) {
   await conn(table).where(whereClause).update(setClause);
 }
 

@@ -2,7 +2,7 @@ import { bulkInsert, conn } from './scripts';
 import { films } from './films';
 import { Knex } from 'knex';
 
-async function main(): Promise<void> {
+async function main() {
 
   const knex: Knex = conn();
 
@@ -10,6 +10,6 @@ async function main(): Promise<void> {
   knex.destroy();
 }
 
-(async (): Promise<void> => {
+(async () => {
   await main();
 })();
