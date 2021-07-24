@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { decrypt, encryptedApiKey } from './api_key';
 
-async function search(searchTerm: string, privateKey: string): Promise<Todo[]> {
+async function search(searchTerm: string, privateKey: string): Promise<AxiosResponse<any>> {
   const key: string = decrypt(encryptedApiKey, privateKey);  // priv key gitignored
   const url: string = `https://www.omdbapi.com/?apikey=${key}&t=${searchTerm}`;
 

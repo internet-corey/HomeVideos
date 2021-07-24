@@ -1,27 +1,31 @@
+import { Film } from "knex/types/tables";
+import { knex, Knex } from 'knex';
+
 function conn() {
-  const knex = require('knex')({
+  const config = {
     client: 'mysql2',
     connection: {
       host : 'db',
       user : 'root',
       password : 'rewt',
       database : 'db'
-    },
-    pool: { min: 0, max: 7 }
-  });
-  return knex;
+    }
+  };
+
+  const knex_conn: Knex = knex(config);
+  return knex_conn;
 }
 
-async function bulkInsert(knex, table: string, valuesArray: {title: string}[]): Promise<void> {
-  await knex(table).insert(valuesArray);
+async function bulkInsert(conn: Knex, table: string, valuesArray: {title: string}[]): Promise<void> {
+  await conn(table).insert(valuesArray);
 }
 
-async function update(knex, table: string, whereClause: {title: string}, setClause: {}): Promise<void> {
-  await knex(table).where(whereClause).update(setClause);
+async function update(conn: Knex, table: string, whereClause: {title: string}, setClause: {}): Promise<void> {
+  await conn(table).where(whereClause).update(setClause);
 }
 
-async function select(knex, field: string, table: string, ...nullFields: [string]) {
-  const result = await knex.select(field).from(table).whereNull(...nullFields);
+async function select(conn: Knex, field: string, table: string, ...nullFields: [string]): Promise<Pick<Film, "title">[]> {
+  const result: Pick<Film, "title">[] = await conn.select(field).from(table).whereNull(...nullFields);
   return result;
 }
 

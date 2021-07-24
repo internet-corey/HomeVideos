@@ -1,8 +1,9 @@
-import { conn } from './scripts'
+import { conn } from './scripts';
+import { Knex } from 'knex';
 
 async function main(): Promise<void> {
 
-  const knex = conn();
+  const knex: Knex = conn();
 
   await knex.schema.withSchema('db').dropTableIfExists('films');
 
@@ -19,6 +20,6 @@ async function main(): Promise<void> {
   knex.destroy();
 }
 
-(async () => {
+(async (): Promise<void> => {
   await main();
 })();

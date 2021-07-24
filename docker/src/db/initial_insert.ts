@@ -1,14 +1,15 @@
-import { bulkInsert, conn } from './scripts'
+import { bulkInsert, conn } from './scripts';
 import { films } from './films';
+import { Knex } from 'knex';
 
 async function main(): Promise<void> {
 
-  const knex = conn();
+  const knex: Knex = conn();
 
   await bulkInsert(knex, 'films', films);
   knex.destroy();
 }
 
-(async () => {
+(async (): Promise<void> => {
   await main();
 })();

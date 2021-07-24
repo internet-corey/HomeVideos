@@ -1,12 +1,11 @@
 import { privateDecrypt } from 'crypto';
 import { readFileSync } from 'fs';
 
-declare const Buffer;
 
 function decrypt(toDecrypt: string, privateKeyPath: string): string {
-  const privateKey = readFileSync(privateKeyPath, 'utf8')
-  const buffer = Buffer.from(toDecrypt, 'base64')
-  const decrypted = privateDecrypt(
+  const privateKey: string = readFileSync(privateKeyPath, 'utf8')
+  const buffer: Buffer = Buffer.from(toDecrypt, 'base64')
+  const decrypted: Buffer = privateDecrypt(
     {
       key: privateKey.toString(),
       passphrase: '',

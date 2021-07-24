@@ -1,4 +1,4 @@
-async function main() {
+async function main(): Promise<void> {
   const scripts = require('./db/scripts.js');
 
   const filmArray = process.argv.slice(2).map(film => ({title: film}));
@@ -8,6 +8,6 @@ async function main() {
   knex.destroy();
 }
 
-(async () => {
+(async (): Promise<void> => {
   await main();
 })();
