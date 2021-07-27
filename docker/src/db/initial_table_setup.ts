@@ -6,8 +6,6 @@ async function main() {
   const knex: Knex = conn();
 
   await knex.schema.withSchema('db').dropTableIfExists('films');
-
-  // @ts-ignore
   await knex.schema.withSchema('db').createTable('films', function (table) {
     table.increments();
     table.string('title');

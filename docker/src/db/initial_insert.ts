@@ -3,7 +3,6 @@ import { films } from './films';
 import { Knex } from 'knex';
 
 async function main() {
-
   const knex: Knex = conn();
 
   await bulkInsert(knex, 'films', films);

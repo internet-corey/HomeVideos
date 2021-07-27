@@ -1,12 +1,13 @@
+import { search } from './api/api_search';
+import { conn, update, select } from './db/scripts';
+import { Knex } from 'knex';
+
 async function main() {
-  const api = require('./api/api_search.js');
-  const scripts = require('./db/scripts.js');
-
   const privateKey = './api/private_key.pem';
-  const knex = scripts.knex();
+  const knex: Knex = conn();
 
-  async function updateFilms(filmTitle, response) {
-    function clean(str) {
+  async function updateFilms(filmTitle: string, response: Record<string, string>) {
+    function clean(str: string) {
       return str.replace(/[^\w\s]/g, '').replace('  ', ' ').toLowerCase();
     }
 
@@ -21,15 +22,15 @@ async function main() {
         rating: response.Rated,
         runtime: response.Runtime.replace(' min', '')
       };
-      await scripts.update(knex, 'films', whereClause, setClause);
+      await update(knex, 'films', whereClause, setClause);
     }
   }
 
-  const nullFields = ['year', 'genre', 'rating', 'runtime'];
-  const titles = (await scripts.select(knex, 'title', 'films', ...nullFields)).map(row => (row.title));
+  const nullFields: string[] = ['year', 'genre', 'rating', 'runtime'];
+  const titles: string[] = (await select(knex, 'title', 'films', ...nullFields)).map(row => (row.title));
 
   for (let title of titles) {
-    const res = await api.search(title, privateKey);
+    const res = await search(title, privateKey);
     res.Response === "True"
       ? await updateFilms(title, res)
       : console.log(`ERROR - ${title}: ${res}`);
