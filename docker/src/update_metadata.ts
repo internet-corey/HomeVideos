@@ -26,8 +26,9 @@ async function main() {
     }
   }
 
-  const nullFields: string[] = ['year', 'genre', 'rating', 'runtime'];
-  const titles: string[] = (await select(knex, 'title', 'films', ...nullFields)).map(row => (row.title));
+  const rawString: string = 'WHERE ? IS NULL OR WHERE ? IS NULL OR WHERE ? IS NULL OR WHERE ? IS NULL';
+  const rawFields: string[] = ['year', 'genre', 'rating', 'runtime'];
+  const titles: string[] = (await select(knex, 'title', 'films', rawString, rawFields)).map(row => (row.title));
 
   for (let title of titles) {
     const res = await search(title, privateKey);

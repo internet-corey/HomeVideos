@@ -24,8 +24,8 @@ async function update(conn: Knex, table: string, whereClause: {title: string}, s
   await conn(table).where(whereClause).update(setClause);
 }
 
-async function select(conn: Knex, field: string, table: string, ...nullFields: string[]): Promise<Pick<Film, "title">[]> {
-  const result: Pick<Film, "title">[] = await conn.select(field).from(table).whereNull(...nullFields);
+async function select(conn: Knex, field: string, table: string, rawString: string, rawFields: string[]): Promise<Pick<Film, "title">[]> {
+  const result: Pick<Film, "title">[] = await conn.select(field).from(table).whereRaw(rawString, rawFields);
   return result;
 }
 
