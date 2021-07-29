@@ -1,7 +1,9 @@
-async function main() {
-  const scripts = require('./scripts');
+import { conn } from './scripts';
+import { Knex } from 'knex';
 
-  const knex = scripts.knex();
+async function main() {
+
+  const knex: Knex = conn();
 
   await knex.schema.withSchema('db').dropTableIfExists('films');
   await knex.schema.withSchema('db').createTable('films', function (table) {
