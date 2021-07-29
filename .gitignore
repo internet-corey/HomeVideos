@@ -1,4 +1,4 @@
 # files
-docker/src/api/private_key.pem
+docker/src/dist/api/private_key.pem
 
 node_modules
