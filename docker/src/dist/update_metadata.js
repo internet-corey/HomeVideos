@@ -35,10 +35,10 @@ function main() {
                 }
             });
         }
-        const rawString = 'WHERE ? IS NULL OR WHERE ? IS NULL OR WHERE ? IS NULL OR WHERE ? IS NULL';
-        const rawFields = ['year', 'genre', 'rating', 'runtime'];
-        const titles = (yield scripts_1.select(knex, 'title', 'films', rawString, rawFields)).map(row => (row.title));
-        for (let title of titles) {
+        const rawString = 'year IS NULL OR genre IS NULL OR rating IS NULL OR runtime IS NULL';
+        const titles = (yield scripts_1.select(knex, 'title', 'films', rawString, []));
+        const cleanTitles = Object.values(JSON.parse(JSON.stringify(titles))).map((row) => (row.title));
+        for (let title of cleanTitles) {
             const res = yield api_search_1.search(title, privateKey);
             res.Response === "True"
                 ? yield updateFilms(title, res)

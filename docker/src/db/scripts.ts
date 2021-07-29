@@ -1,4 +1,3 @@
-import { Film } from "knex/types/tables";
 import knex, { Knex } from "knex";
 
 function conn() {
@@ -24,8 +23,8 @@ async function update(conn: Knex, table: string, whereClause: {title: string}, s
   await conn(table).where(whereClause).update(setClause);
 }
 
-async function select(conn: Knex, field: string, table: string, rawString: string, rawFields: string[]): Promise<Pick<Film, "title">[]> {
-  const result: Pick<Film, "title">[] = await conn.select(field).from(table).whereRaw(rawString, rawFields);
+async function select(conn: Knex, field: string, table: string, rawString: string, rawFields: string[]): Promise<string[]> {
+  const result: string[] = await conn.select(field).from(table).whereRaw(rawString, rawFields);
   return result;
 }
 

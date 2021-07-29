@@ -26,11 +26,11 @@ async function main() {
     }
   }
 
-  const rawString: string = 'WHERE ? IS NULL OR WHERE ? IS NULL OR WHERE ? IS NULL OR WHERE ? IS NULL';
-  const rawFields: string[] = ['year', 'genre', 'rating', 'runtime'];
-  const titles: string[] = (await select(knex, 'title', 'films', rawString, rawFields)).map(row => (row.title));
+  const rawString: string = 'year IS NULL OR genre IS NULL OR rating IS NULL OR runtime IS NULL';
+  const titles: string[] = (await select(knex, 'title', 'films', rawString, []));
+  const cleanTitles: string[] = Object.values(JSON.parse(JSON.stringify(titles))).map((row: {title: string}) => (row.title));
 
-  for (let title of titles) {
+  for (let title of cleanTitles) {
     const res = await search(title, privateKey);
     res.Response === "True"
       ? await updateFilms(title, res)
