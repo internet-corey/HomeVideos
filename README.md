@@ -1,6 +1,6 @@
 # HomeVideos
 
-Containerized JS app to pull film metadata from the OMDB API and store in a local mysql db for a personal film collection
+Containerized TS app to pull film metadata from the OMDB API and store in a local mysql db for a personal film collection
 
 ## Setup
 - `docker-compose up --build`
