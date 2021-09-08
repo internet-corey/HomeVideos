@@ -1,33 +1,34 @@
 import { generateKeyPair, publicEncrypt, privateDecrypt } from 'crypto';
 import { readFileSync } from 'fs';
 
+// kept for posterity to show how encryptedApiKey was created
 function keyGen(): void {
-  generateKeyPair(
-    'ec',
-    {
-      namedCurve: 'secp256k1',
+  generateKeyPair('rsa', {
+      modulusLength: 4096,
       publicKeyEncoding: {
         type: 'spki',
-        format: 'der'
+        format: 'pem'
       },
       privateKeyEncoding: {
         type: 'pkcs8',
-        format: 'der'
+        format: 'pem',
+        cipher: 'aes-256-cbc',
+        passphrase: 'top secret'
       }
-    },
-    (err: Error, pub: Buffer, prv: Buffer) => {
+    }, (err, pub, prv) => {
       if (!err) {
         console.log(`pubkey: ${pub}\nprivkey: ${prv}`)
       }
       else {
         console.log(`Error: ${err}`)
       }
-    }
-  )
+    });
 }
 
-function encrypt(message: string, pubKey: string) {
+// kept for posterity to show how encryptedApiKey was created
+function encrypt(message: string, pubKeyPath: string) {
   const buffer: Buffer = Buffer.from(message);
+  const pubKey: string = readFileSync(pubKeyPath, 'utf8');
   const encryptedMessage: Buffer = publicEncrypt(pubKey, buffer);
   return encryptedMessage.toString('base64');
 }
@@ -45,8 +46,8 @@ function decrypt(message: string, prvKeyPath: string) {
   return decryptedMessage.toString('utf8')
 }
 
-// generated using keys from keyGen(),
-// encrypt() function using actual omdb API key
-const encryptedApiKey: string = 'gZl7J5WGU4vw6ewKoLRNHCnrSZP99Y73pfjzouQX7R5xUbbE4QlTiB9EDCuBp/Fp5wDrlQsgOX6jzIKwwd/pU95fK1TANWO+ST4iX7xbPzUEPeZuxp3z46S5sC5nFMp7wST0r5aBPZuw2mG7pH/MRCtS0mMmfD/9uHxL0VP5SZNjYmn/QSe3lEwSDST1xcDtv8v0H1frwAW0su/3hrN8x6T4s5/BepHh46OwIHpr0iH80lttJnIUWJ3B2sQlMBUh8BSQqnjcpaEQGttEhq2ZhBth1UGKITXNOJh3R07+aRWDV/UWoIyKQwY6sgehDffItAl2VtlsDpu/7OKYgEaUtaaE8vsqAwUV9HcnOKWu/nKsLsukiRn4mND13484GcAk/HiDdF9QWkQJXoiLM3HBH5AkLs6isz5IIu/1zZlEELS+4X+pjzWIE/2fuF1RCdYWy5RwGVs8rMnKTfw4TqNzsH8dwjaaiH9GVCluTBwlmCN/4Ca8lUPXREQ4FpSU5hz35n4JEwFZ5+6lBOiwpQRLG+v5E8+Cs0kRwk3G1axCJPekWTPfmEJNE6FwILmYwpl+STFfob3GKW4FtKwDjO4jhQZ4MjBPC4nHPOOEJ6HwRpV9/K6cFh0KCDbNmjud/ZgaEEsNfj2RCAYuyVMvv7lS3AWtfn/bCFWYg7zeDj1mzmo='
+// generated using keys from keyGen() and
+// encrypt() function using actual omdb API key as message arg
+const encryptedApiKey: string = 'll4zu3AZaOy7OEr+X1zZliXeUU973cUVKdl5BfheWPVBp/qP1zhmog06I7+eMKUmRJBGOw+52WFFp0NHTI4PPA7GOk4XDjvne0YwYRaDeadcFHqwKQWre1D/zAHr1C5Ugg1JP2DR7zLFJMDfLdu377VJzxFx163LL4/k3WjYqflFLYWioAjkbh5Au6PT994gbzMib4faX4wzc0qkzTrOcTujtc3kyIl9GefIvGHl2/JKGF++pcIpH+ASGhOAAP36ZU6BPkY3ujqBd2lY69mvA7xJ4NroX2ymwRxafVt28gkuUeBtDGjbODil2eQkg18yypcUxytSI40iew/dIB7HHqdra5Db+f1kU9y52od8R5R9cg2xG8DFBQNt31FBVGubV5jHoDadodG2g6WDzpYZUilCM5EEwNpxcHUNyfRDSThusTDcOSobc0Slb+pp4c+lVCOHHYoMoM33pmZwdqBbD+izCKw4jWgdkZmfTSdOuDXDK3x4kcla94JdseMrbsd2fO1yTppHMkqKJ6LbzSyVKh+Bl49cB7/psExcclzMN73cItLeFGrbGjw2aWqQ5hw1jHSkHGAstv0Ylkp09Ep4QNj6eJ7DOHTiWRflWj5KpVkD4O994wHcLstmiBIVJ6Oglwi5jUu3iPqvMlBewAL5gxltIA2XGMw/ZWkLthc0Qlw=';
 
 export { decrypt, encryptedApiKey };

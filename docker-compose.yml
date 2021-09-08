@@ -15,7 +15,7 @@ services:
       - default
     volumes:
       - sqldb:/var/lib/mysql
-      -./dist/db:/docker-entrypoint-initdb.d
+      - ./docker/src/db:/docker-entrypoint-initdb.d
   app:
     build: ./docker
     image: node:14-alpine
