@@ -15,6 +15,7 @@ services:
       - default
     volumes:
       - sqldb:/var/lib/mysql
+      -./dist/db:/docker-entrypoint-initdb.d
   app:
     build: ./docker
     image: node:14-alpine
@@ -29,6 +30,6 @@ services:
       - db
     tty: true
     volumes:
-      - ./docker/src:/HomeVideos/src
+      - ./docker:/HomeVideos
 volumes:
   sqldb:
