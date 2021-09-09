@@ -13,7 +13,7 @@ const api_search_1 = require("./api/api_search");
 const scripts_1 = require("./db/scripts");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        const privateKey = '../../../private_key.pem';
+        const privateKey = '../key/prvKey.pem';
         const knex = scripts_1.conn();
         function updateFilms(filmTitle, response) {
             return __awaiter(this, void 0, void 0, function* () {

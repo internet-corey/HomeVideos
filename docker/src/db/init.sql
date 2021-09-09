@@ -1,13 +1,13 @@
 CREATE TABLE IF NOT EXISTS `db`.`films` (
   id INT NOT NULL AUTO_INCREMENT
-  ,title VARCHAR NOT NULL
-  ,year INT
-  ,genre VARCHAR
-  ,rating VARCHAR
-  ,runtimne INT
+  ,title VARCHAR(250) NOT NULL
+  ,year VARCHAR(250)
+  ,genre VARCHAR(250)
+  ,rating VARCHAR(250)
+  ,runtime VARCHAR(250)
+  ,PRIMARY KEY (id)
 );
 
--- Does the initial insert if the table is empty
 INSERT INTO films (title)
 SELECT * FROM (
   SELECT 'Anchorman: The Legend of Ron Burgundy' AS title
@@ -114,5 +114,4 @@ SELECT * FROM (
   UNION SELECT 'The World''s End'
   UNION SELECT 'Young Frankenstein'
   UNION SELECT 'Zootopia'
-) q
-WHERE NOT EXISTS (SELECT * FROM films);
+) q;

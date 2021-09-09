@@ -31,5 +31,6 @@ services:
     tty: true
     volumes:
       - ./docker:/HomeVideos
+      - ../prvkey:/key
 volumes:
   sqldb:

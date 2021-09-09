@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-WORKDIR /HomeVideos/src
+WORKDIR /HomeVideos
 
 COPY . /HomeVideos/
 

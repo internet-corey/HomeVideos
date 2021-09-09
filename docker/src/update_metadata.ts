@@ -3,7 +3,7 @@ import { conn, update, select } from './db/scripts';
 import { Knex } from 'knex';
 
 async function main() {
-  const privateKey = '../../../private_key.pem';
+  const privateKey = '../key/prvKey.pem';
   const knex: Knex = conn();
 
   async function updateFilms(filmTitle: string, response: Record<string, string>) {
