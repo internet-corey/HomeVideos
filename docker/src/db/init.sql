@@ -12,8 +12,6 @@ INSERT INTO films (title)
 SELECT * FROM (
   SELECT 'Anchorman: The Legend of Ron Burgundy' AS title
   UNION SELECT 'Anchorman 2: The Legend Continues'
-  UNION SELECT 'Anchorman: The Legend of Ron Burgundy'
-  UNION SELECT 'Anchorman 2: The Legend Continues'
   UNION SELECT 'Batman Begins'
   UNION SELECT 'Beerfest'
   UNION SELECT 'Bill & Ted''s Excellent Adventure'
