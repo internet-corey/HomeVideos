@@ -1,17 +1,9 @@
 import knex, { Knex } from "knex";
+import { config } from './config';
 
 function conn() {
-  const config = {
-    client: 'mysql2',
-    connection: {
-      host : 'db',
-      user : 'root',
-      password : 'rewt',
-      database : 'db'
-    }
-  };
-
-  const knex_conn: Knex = knex(config);
+  const conf = config;
+  const knex_conn: Knex = knex(conf);
   return knex_conn;
 }
 

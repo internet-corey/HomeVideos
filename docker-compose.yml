@@ -5,10 +5,10 @@ services:
     container_name: db
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'strongpw'
-      MYSQL_ROOT_PASSWORD: 'rewt'
+      MYSQL_DATABASE: '${DB}'
+      MYSQL_USER: '${USR}'
+      MYSQL_PASSWORD: '${PSSWRD}'
+      MYSQL_ROOT_PASSWORD: '${RTPSSWRD}'
     ports:
       - '3306:3306'
     networks:
