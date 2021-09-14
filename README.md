@@ -8,7 +8,7 @@ Containerized TS app to pull film metadata from the OMDb API and store in a loca
 
 ## Usage
 - add_new_films
-  - add titles to the films db table from command line args
+  - add titles to the `films` table from command line args
   - `node dist/add_new_films.js "Arrival" "Annihilation" "Silent Running"`
 - update_metadata
   - connects to the OMDb API to fill in any missing metadata for titles in the `films` table
