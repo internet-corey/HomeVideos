@@ -19,7 +19,7 @@ services:
   app:
     build: ./docker
     image: node:14-alpine
-    container_name: node
+    container_name: homevids
     ports:
       - 3000:3000
     networks:

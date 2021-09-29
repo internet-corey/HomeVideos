@@ -4,7 +4,8 @@ Containerized TS app to pull film metadata from the OMDb API and store in a loca
 
 ## Setup
 - `docker-compose up --build`
-- in container, `npm run build`
+- `docker exec -it homevids sh`
+- in container, `npm install && npm run build`
 
 ## Usage
 - add_new_films
